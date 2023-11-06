@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Contato</title>
+    <script src="../static/js.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    
+
+    <script>
+        window.addEventListener("load", function () {
+            var paisagemAtual = 1;
+
+            function exibirPersonagem() {
+                document.getElementById("paisagem").src = `./img/img0${paisagemAtual}.jpg`;
+                paisagemAtual++;
+                if (paisagemAtual > 9) {
+                    paisagemAtual = 1;
+                }
+            }
+            setInterval(exibirPersonagem, 1000);
+        });
+        
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function atualizarHora() {
+                var data = new Date();
+                var hora = data.getHours();
+                var minutos = data.getMinutes();
+                var segundos = data.getSeconds();
+
+                hora = hora < 10 ? "0" + hora : hora;
+                minutos = minutos < 10 ? "0" + minutos : minutos;
+                segundos = segundos < 10 ? "0" + segundos : segundos;
+
+                var horaAtual = hora + ":" + minutos + ":" + segundos;
+
+                var horaAtualElement = document.getElementById("hora-atual");
+                if (horaAtualElement) {
+                    horaAtualElement.innerHTML = horaAtual;
+                }
+            }
+
+            setInterval(atualizarHora, 1000);
+        });
+
+    </script>
+</head>
+
+<body>
+
+
+
+    <main>
+        <div class="container">
+
+            <div class="person">
+                <div class="paisagem">
+                    <img src="" alt="" width="630px" height="450px" id="paisagem">
+                </div>
+
+                <div id="hora-atual"></div>
+            </div>
+
+
+
+            <h1>Sabe que horas são? É hora de escolher o melhor pacote turístico para suas férias.</h1>
+
+            <P>Digite os dados para cadastro de contato de clientes...</P>
+
+
+            <div class="mb-3">
+                <form method="GET" action="/contatosParametro">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" name="nome" placeholder="Insira o Nome">
+                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                </form>
+            </div>
+
+            <form method="POST" action="/contatos" th:object="${contato}">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Endereço de Email</label>
+                    <input type="email" class="form-control" th:field="*{email}" th:disabled="${edit == true}" required>
+                </div>
+
+                <div th:if="${errorMessage != null}" class="alert alert-danger">
+                    <strong>Erro:</strong> ${errorMessage}
+                </div>
+
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Nome</label>
+                    <input type="text" class="form-control" th:field="*{nome}" placeholder="Insira o Nome">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPhone" class="form-label">Telefone</label>
+                    <input type="tel" class="form-control" name="telefone" th:field="*{telefone}"
+                        placeholder="(XX) XXXXX-XXXX">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputCidade" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" name="cidade" th:field="*{cidade}"
+                        placeholder="Insira a Cidade">
+                </div>
+                <BR>
+                <label for="estados">Estados:</label>
+                <select id="estados" name="estados" th:field="*{uf}">
+                    <option th:value="null" selected>Selecione a UF:</option>
+                    <option th:value="AC">Acre</option>
+                    <option th:value="AL">Alagoas</option>
+                    <option th:value="AP">Amapá</option>
+                    <option th:value="AM">Amazonas</option>
+                    <option th:value="BA">Bahia</option>
+                    <option th:value="CE">Ceará</option>
+                    <option th:value="DF">Distrito Federal</option>
+                    <option th:value="ES">Espírito Santo</option>
+                    <option th:value="GO">Goiás</option>
+                    <option th:value="MA">Maranhão</option>
+                    <option th:value="MT">Mato Grosso</option>
+                    <option th:value="MS">Mato Grosso do Sul</option>
+                    <option th:value="MG">Minas Gerais</option>
+                    <option th:value="PA">Pará</option>
+                    <option th:value="PB">Paraíba</option>
+                    <option th:value="PR">Paraná</option>
+                    <option th:value="PE">Pernambuco</option>
+                    <option th:value="PI">Piauí</option>
+                    <option th:value="RJ">Rio de Janeiro</option>
+                    <option th:value="RN">Rio Grande do Norte</option>
+                    <option th:value="RS">Rio Grande do Sul</option>
+                    <option th:value="RO">Rondônia</option>
+                    <option th:value="RR">Roraima</option>
+                    <option th:value="SC">Santa Catarina</option>
+                    <option th:value="SP">São Paulo</option>
+                    <option th:value="SE">Sergipe</option>
+                    <option th:value="TO">Tocantins</option>
+                </select>
+                <BR>
+
+                <div class="mb-3">
+                    <label class="form-label">Sexo</label>
+                    <select class="form-select" name="sexo" th:field="*{sexo}">
+                        <option th:value="null" selected>Escolha...</option>
+                        <option th:value="masculino">Masculino</option>
+                        <option th:value="feminino">Feminino</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">UF</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col">Ações</th> <!-- Adicionando uma coluna para as ações -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="contato : ${contatos}">
+                        <td th:text="${contato.nome}"></td>
+                        <td th:text="${contato.email}"></td>
+                        <td th:text="${contato.telefone}"></td>
+                        <td th:text="${contato.cidade}"></td>
+                        <td th:text="${contato.uf}"></td>
+                        <td th:text="${contato.sexo}"></td>
+                        <td>
+                            <a th:href="@{'/editarContato?email=' + ${contato.email}}"><i class="fas fa-edit"></i>
+                                Editar</a>
+                            <a th:href="@{'/excluirContato?email=' + ${contato.email}}"><i class="fas fa-trash"></i>
+                                Excluir</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </main>
+
+    <footer>
+        <p>©Copyright 2023 by William.Alves. All rights reversed.</p>
+    </footer>
+
+</body>
+
+</html>
